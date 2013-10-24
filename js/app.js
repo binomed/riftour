@@ -2,7 +2,7 @@ var riftour = riftour || function(){
 
 
 	function pageLoad(){
-		var streetviewPlayer = new google.maps.StreetViewPlayer({
+		/*var streetviewPlayer = new google.maps.StreetViewPlayer({
 		    origin: "Phoenix, AZ",
 		    destination: "Tempe, AZ",
 		    travelMode: google.maps.TravelMode.DRIVING,
@@ -17,8 +17,13 @@ var riftour = riftour || function(){
 		    onProgress: function(progress) {
 		        //do something with progress
 		    }
+		});*/
+
+		$("#clickMe").on('click', function(){
+			BaseRotationEuler.set(0.0, angleRangeRad(THREE.Math.degToRad(180)) , 0.0 );
+			updateCameraRotation();
 		});
-	}
+	}	
 
 	//API
 	function init(){
