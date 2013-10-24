@@ -351,7 +351,7 @@ function initGoogleMap() {
 }
 
 
-function moveToNextPlace() {
+function moveToNextPlace(callBack) {
   var nextPoint = null;
   var minDelta = 360;
   var navList = panoLoader.links;
@@ -364,7 +364,7 @@ function moveToNextPlace() {
   }
 
   if (nextPoint) {
-    panoLoader.load(nextPoint);
+    panoLoader.load(nextPoint, true, callBack);
   }
 }
 

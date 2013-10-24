@@ -20,8 +20,64 @@ var riftour = riftour || function(){
 		});*/
 
 		$("#clickMe").on('click', function(){
-			BaseRotationEuler.set(0.0, angleRangeRad(THREE.Math.degToRad(180)) , 0.0 );
+			BaseRotationEuler.set(
+		        angleRangeRad(BaseRotationEuler.x + /*(event.clientY - lastClientY)*/ 0 * MOUSE_SPEED),
+		        angleRangeRad(BaseRotationEuler.y + /*(event.clientX - lastClientX)*/window.innerWidth * MOUSE_SPEED),
+		        0.0
+		      );
+		      //lastClientX = event.clientX;lastClientY =event.clientY;
+		      BaseRotation.setFromEuler(BaseRotationEuler, 'YZX');
+
+			//BaseRotationEuler.set(0.0, angleRangeRad(THREE.Math.degToRad(180)) , 0.0 );
 			updateCameraRotation();
+		});
+
+		var savedHeading = 0;		
+		var lastBaseRotation = new THREE.Vector3();
+		lastBaseRotation.x = HMDRotation.x;
+		lastBaseRotation.y = HMDRotation.y;
+		lastBaseRotation.z = HMDRotation.z;
+		BaseRotation.set(
+		      HMDRotation.x,
+		      HMDRotation.y,
+		      HMDRotation.z,
+		      HMDRotation.w);
+		updateCameraRotation();
+
+		$("#clickMe2").on('click', function(){
+			//savedHeading = currHeading;
+			//console.log("moveToNextPlace");
+			//console.log("Previous HMDRotation : "+HMDRotation.y + " <-> "+BaseRotation.y+" BaseRotation <-> lastBaseRotation :"+lastBaseRotation.y  );
+			/*BaseRotation.set(
+			      HMDRotation.x,
+			      HMDRotation.y,
+			      HMDRotation.z,
+			      HMDRotation.w);
+			updateCameraRotation();*/
+			moveToNextPlace(function(){
+
+				BaseRotation.set(
+			      HMDRotation.x,
+			      HMDRotation.y,
+			      HMDRotation.z,
+			      HMDRotation.w);
+
+				updateCameraRotation();
+
+				//console.log("After Callback HMDRotation : "+HMDRotation.y + " <-> "+BaseRotation.y+" BaseRotation <-> lastBaseRotation :"+lastBaseRotation.y );
+				/*BaseRotation.set(
+			      BaseRotation.x + (HMDRotation.x - BaseRotation.x),
+			      BaseRotation.y + (HMDRotation.y - BaseRotation.y),//HMDRotation.y,
+			      BaseRotation.z + (HMDRotation.z - BaseRotation.z),//HMDRotation.z,
+			      HMDRotation.w);
+				console.log("updateCameraRotation");
+				updateCameraRotation();*/
+				lastBaseRotation.x = HMDRotation.x;
+				lastBaseRotation.y = HMDRotation.y;
+				lastBaseRotation.z = HMDRotation.z;
+				//console.log("UpdateCamera HMDRotation : "+HMDRotation.y + " <-> "+BaseRotation.y+" BaseRotation <-> lastBaseRotation :"+lastBaseRotation.y );
+			});
+			//HMDRotation.set(BaseRotationEuler.x,BaseRotationEuler.y,BaseRotationEuler.y,BaseRotation.w);
 		});
 	}	
 
