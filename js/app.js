@@ -19,6 +19,28 @@ var riftour = riftour || function(){
 		    }
 		});*/
 
+
+		// Les points du parcours
+		var m_aVertices = null;
+		var m_Pano = [];
+		var m_iSensitivity = 15;
+		var m_iVerticesBack = 0;
+
+		var m_sPanoClient = new google.maps.StreetViewService();
+
+
+		function getPanoramaDataForVertex(vertex, callback) {
+			m_sPanoClient.getPanoramaByLocation(vertex, m_iSensitivity, function(panoData,status) {
+				if(status==="OK" && panoLoader) {
+					panoLoader.load(panoData.location.pano, true,callback);
+					m_iCurrentFrame++;
+					
+				} 
+			})
+		}
+
+
+
 		$("#clickMe").on('click', function(){
 			BaseRotationEuler.set(
 		        angleRangeRad(BaseRotationEuler.x + /*(event.clientY - lastClientY)*/ 0 * MOUSE_SPEED),
@@ -30,6 +52,54 @@ var riftour = riftour || function(){
 
 			//BaseRotationEuler.set(0.0, angleRangeRad(THREE.Math.degToRad(180)) , 0.0 );
 			updateCameraRotation();
+		});
+
+
+		$("#clickMe3").on('click', function(){
+			
+
+			
+			(new google.maps.DirectionsService()).route({
+				 origin:"Epitech, Nantes",
+				 destination:"Carousel, Nantes",
+				 travelMode:google.maps.TravelMode.DRIVING
+					}, 
+				function(result, status) {
+					if(status == google.maps.DirectionsStatus.OK) {
+						m_bPaused = true;
+						m_aVertices = result.routes[0].overview_path;
+						m_Pano = [];
+						//m_aFrames = [];
+						m_iTotalFrames = m_aVertices.length;
+						m_iCurrentFrame = 0;
+						m_iVerticesBack = 0;
+						getPanoramaDataForVertex(m_aVertices[m_iCurrentFrame]);						
+						/*
+						if(m_dDirectionsMap===null) {
+							m_dDirectionsMap = new google.maps.Map(self.config.mapCanvas,{
+								zoom:14,
+								center : m_aVertices[0],
+								mapTypeId: google.maps.MapTypeId.ROADMAP
+							});
+
+							m_mMarker = new google.maps.Marker({
+								map: m_dDirectionsMap,
+								location:m_aVertices[0],
+								visible:true
+							})
+						}
+						
+						if(m_dDirectionsDisplay===null) {
+							m_dDirectionsDisplay = new google.maps.DirectionsRenderer();
+							m_dDirectionsDisplay.setMap(m_dDirectionsMap);
+						}
+						m_dDirectionsDisplay.setDirections(result);
+						self.setPaused(false);*/
+					} else {
+						alert("Error pulling directions for movie, please try again.");
+					}
+				})
+
 		});
 
 		var savedHeading = 0;		
@@ -45,6 +115,18 @@ var riftour = riftour || function(){
 		updateCameraRotation();
 
 		$("#clickMe2").on('click', function(){
+
+			getPanoramaDataForVertex(m_aVertices[m_iCurrentFrame],function(){
+
+				BaseRotation.set(
+			      HMDRotation.x,
+			      HMDRotation.y,
+			      HMDRotation.z,
+			      HMDRotation.w);
+
+				updateCameraRotation();
+			});						
+
 			//savedHeading = currHeading;
 			//console.log("moveToNextPlace");
 			//console.log("Previous HMDRotation : "+HMDRotation.y + " <-> "+BaseRotation.y+" BaseRotation <-> lastBaseRotation :"+lastBaseRotation.y  );
@@ -54,7 +136,8 @@ var riftour = riftour || function(){
 			      HMDRotation.z,
 			      HMDRotation.w);
 			updateCameraRotation();*/
-			moveToNextPlace(function(){
+			
+			/*moveToNextPlace(function(){
 
 				BaseRotation.set(
 			      HMDRotation.x,
@@ -62,7 +145,7 @@ var riftour = riftour || function(){
 			      HMDRotation.z,
 			      HMDRotation.w);
 
-				updateCameraRotation();
+				updateCameraRotation();*/
 
 				//console.log("After Callback HMDRotation : "+HMDRotation.y + " <-> "+BaseRotation.y+" BaseRotation <-> lastBaseRotation :"+lastBaseRotation.y );
 				/*BaseRotation.set(
@@ -76,7 +159,7 @@ var riftour = riftour || function(){
 				lastBaseRotation.y = HMDRotation.y;
 				lastBaseRotation.z = HMDRotation.z;
 				//console.log("UpdateCamera HMDRotation : "+HMDRotation.y + " <-> "+BaseRotation.y+" BaseRotation <-> lastBaseRotation :"+lastBaseRotation.y );
-			});
+			//});
 			//HMDRotation.set(BaseRotationEuler.x,BaseRotationEuler.y,BaseRotationEuler.y,BaseRotation.w);
 		});
 	}	
