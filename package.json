@@ -1,0 +1,9 @@
+{
+  "author": "jefBinomed",
+  "name": "RiftTour",
+  "dependencies": {
+    "socket.io": "~0.9.14",
+    "connect" : "~2.8.4",
+    "ws" : "~0.4.31"
+  }
+}

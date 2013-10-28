@@ -7,7 +7,19 @@ body {
   font-size: 10px;
   line-height: 15px;
   height: 100%;
+  width: 99%;
   overflow: hidden;
+}
+
+header, footer{
+  text-align: center;
+  color: #fff;
+}
+
+section{
+  overflow-y: auto;
+  /*width: 70%;
+  margin: auto;*/
 }
 
 #viewer {
@@ -18,4 +30,8 @@ body {
 
 #map {
   height: 300px;
+}
+
+#search, #go{
+  margin: auto;
 }

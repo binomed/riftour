@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>StreeView !</title>
+		<link href="libs/bootstrap-3.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="libs/bootstrap-3.0.0/css/bootstrap-theme.min.css" rel="stylesheet">
+        <link href="libs/bootstrap-3.0.0/js/bootstrap.min.js" rel="stylesheet">
+		<!-- Main Css-->        
+        <link rel="stylesheet" href="css/main.css">
+
+                
+	</head>
+	<body>
+
+        <header>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                <h2>Rift Tour 2013</h2>
+                </div>
+            </div>
+        </header>
+        <section>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Selectionnez votre itinéraire</h3>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="radio">
+                              <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                                Choix Préféfinit
+                              </label>
+                            </div>
+                            <div class="radio">
+                              <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                                Choix Personnalisé
+                              </label>
+                            </div>
+
+                            <br><br>
+
+                            <div id="predefChoice">
+
+                                <select id="choiceSelect" class="form-control">
+                                    <option value="croisette">La croisette</option>
+                                    <option value="champs">Les champs Elysées</option>
+                                    <option value="anglais">La promenade des anglais</option>
+                                </select>
+                            </div>
+
+
+                            <div id="mapChoice">
+
+                                <form class="form-inline" role="form">
+                                  <div class="form-group">
+                                    <label class="sr-only" for="origin">Origine</label>
+                                    <input type="text" class="form-control" id="origin" placeholder="Epitech, Nantes...">
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="sr-only" for="dest">Destination</label>
+                                    <input type="text" class="form-control" id="dest" placeholder="Les Machines, Nantes...">
+                                  </div>
+                                </form>
+                                  <hr>    
+                                  <button id="search" class="btn btn-primary">Google it for me ?</button>
+                                  <hr>    
+                                  <canvas id="mapResult"></canvas>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+
+                    <div id="divGoOculus" class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Valider votre itinéraire</h3>
+                        </div>
+                        
+                        <button id="go" class="btn btn-primary">Go Oculus ! </button>
+                        </div>
+                    </div>
+                </div>
+            </dvi>
+
+        </section>
+        <footer>
+            <nav class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+              credits to @WebEllis, Binomed, Stan
+            </nav>
+        </footer>
+
+    <!-- Socket IO -->
+     <script src="/socket.io/socket.io.js"></script>
+    
+    <!-- STREETVIEW LIBS    -->
+    <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script type="text/javascript" src="libs/streetviewplayer/google.maps.LatLng.js"></script>
+    <script type="text/javascript" src="libs/streetviewplayer/google.maps.StreetViewPlayer.js"></script>
+    <script type="text/javascript" src="libs/streetviewplayer/google.maps.StreetViewPlayer.Frame.js"></script>
+
+	<!--  JQUERY-->
+    <script src="libs/jquery/jquery.min.js"></script>
+	<!-- APPLICATION -->
+	<script src='js/control.js'></script>
+
+
+	</body>
+</html>
