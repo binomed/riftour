@@ -29,6 +29,12 @@ var riftourControl = riftourControl || function(){
             }));
         });
 
+        $("#search").on("click", function(){
+            voyage.origin = $("#origin").val();
+            voyage.dest = $("#dest").val();
+            
+        });
+
         $("#choiceSelect").change(function(){
             var valSelect = $("#choiceSelect option:selected").val();
             if (valSelect === "croisette"){
@@ -37,8 +43,8 @@ var riftourControl = riftourControl || function(){
                 voyage.origin = "Place de la concorde, Paris";
                 voyage.dest = "Place de l'étoile, Paris";
             }else if (valSelect === "anglais"){
-                voyage.origin = "Nantes";
-                voyage.dest = "Saint-Herblain";
+                voyage.origin = "Epitech, Nantes";
+                voyage.dest = "Les machines, Nantes";
             }
         });
 

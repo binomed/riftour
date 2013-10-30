@@ -11,6 +11,10 @@ body {
   overflow: hidden;
 }
 
+.row{
+  margin: 0;
+}
+
 header, footer{
   text-align: center;
   color: #fff;

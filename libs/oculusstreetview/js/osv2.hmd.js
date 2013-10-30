@@ -248,7 +248,7 @@ function initPano() {
   };
 
   panoLoader.onPanoramaLoad = function() {
-    var a = THREE.Math.degToRad(90 - panoLoader.heading);
+    var a = THREE.Math.degToRad(90 -  panoLoader.heading);
     projSphere.quaternion.setFromEuler(new THREE.Vector3(0,a,0), 'YZX');
 
     projSphere.material.wireframe = false;
@@ -260,9 +260,9 @@ function initPano() {
     progBarContainer.visible = false;
     progBar.visible = false;
 
-    marker.setMap( null );
+   /* marker.setMap( null );
     marker = new google.maps.Marker({ position: this.location.latLng, map: gmap });
-    marker.setMap( gmap );
+    marker.setMap( gmap );*/
 
     if (window.history) {
       var newUrl = '/oculusstreetview/?lat='+this.location.latLng.lat()+'&lng='+this.location.latLng.lng();
@@ -436,7 +436,7 @@ $(document).ready(function() {
   initWebGL();
   initPano();
   if (USE_TRACKER) initWebSocket();
-  initGoogleMap();
+  //initGoogleMap();
 
   // Load default location
   panoLoader.load( new google.maps.LatLng( DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng ) );

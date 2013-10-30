@@ -7,7 +7,11 @@ var riftour = riftour || function(){
 	var m_iVerticesBack = 0;
 
 	var m_sPanoClient = new google.maps.StreetViewService();
+	var longLatHeading = 0;
 
+
+	var ReferenceHMDRotation = new THREE.Quaternion();
+	var ReferenceAngle = 0;
 
 	
 	function pageLoad(){
@@ -75,17 +79,17 @@ var riftour = riftour || function(){
 
 		});*/
 
-		var savedHeading = 0;		
+		var savedHeading = 0;		/*
 		BaseRotation.set(
 		      HMDRotation.x,
 		      HMDRotation.y,
 		      HMDRotation.z,
 		      HMDRotation.w);
-		updateCameraRotation();
-/*
-		$("#clickMe2").on('click', function(){
+		updateCameraRotation();*/
 
+		$("#clickMe2").on('click', function(){				
 			nextStep();						
+			
 
 			//savedHeading = currHeading;
 			//console.log("moveToNextPlace");
@@ -118,9 +122,9 @@ var riftour = riftour || function(){
 				//console.log("UpdateCamera HMDRotation : "+HMDRotation.y + " <-> "+BaseRotation.y+" BaseRotation <-> lastBaseRotation :"+lastBaseRotation.y );
 			//});
 			//HMDRotation.set(BaseRotationEuler.x,BaseRotationEuler.y,BaseRotationEuler.y,BaseRotation.w);
-			/*
+			
 		});
-*/
+
 		connect();
 		//initArduino();
 	}
@@ -133,6 +137,8 @@ var riftour = riftour || function(){
 	function getPanoramaDataForVertex(vertex, callback) {
 		m_sPanoClient.getPanoramaByLocation(vertex, m_iSensitivity, function(panoData,status) {
 			if(status==="OK" && panoLoader) {
+				longLatHeading = panoData.tiles.centerHeading;
+				console.log("Pano : centerHeading : "+panoData.tiles.centerHeading+" | originHeading : "+panoData.tiles.originHeading+" | y : "+projSphere.quaternion.setFromEuler(new THREE.Vector3(0,THREE.Math.degToRad(90-panoData.tiles.centerHeading),0),'YZX').y);
 				panoLoader.load(panoData.location.pano, true,callback);
 				m_iCurrentFrame++;
 				
@@ -140,17 +146,35 @@ var riftour = riftour || function(){
 		})
 	}
 
+	function callBackRotation(){
+		var yLongLat = projSphere.quaternion.setFromEuler(new THREE.Vector3(0,THREE.Math.degToRad(90-longLatHeading),0),'YZX').y;
+		var yHMD = projSphere.quaternion.setFromEuler(new THREE.Vector3(0,THREE.Math.degToRad(90-currHeading),0),'YZX').y;		
+
+
+		var angleDelta = longLatHeading - ReferenceAngle;
+		var quartRot = new THREE.Quaternion(0,Math.sin(THREE.Math.degToRad(angleDelta)/2),0,Math.cos(THREE.Math.degToRad(angleDelta)/2));
+		BaseRotation.multiplyQuaternions(quartRot, HMDRotation);	
+
+		//BaseRotation.multiply(new THREE.Quaternion(0,Math.sin(THREE.Math.degToRad(180)/2),0,Math.cos(THREE.Math.degToRad(180)/2)));	
+
+		//console.log("CallBack : Base.y : "+BaseRotation.y+" | HMD.y : "+HMDRotation.y+" | yLongLat : "+yLongLat+" | yHMD : "+yHMD+" | longLatHeading : "+longLatHeading+" : currHeading : "+currHeading);
+		console.log("CallBack : longLatHeading : "+longLatHeading+" : currHeading : "+currHeading+" | angleDelta : "+angleDelta+" | ReferenceAngle : "+ReferenceAngle);
+
+		//BaseRotation.copy(ReferenceHMDRotation);
+		updateCameraRotation();
+/*
+		BaseRotation.set(
+	      HMDRotation.x,
+	      HMDRotation.y, //yLongLat, //HMDRotation.y,
+	      HMDRotation.z,
+	      HMDRotation.w);
+
+		updateCameraRotation();*/
+	}
+
+
 	function nextStep(){
-		getPanoramaDataForVertex(m_aVertices[m_iCurrentFrame],function(){
-
-				BaseRotation.set(
-			      HMDRotation.x,
-			      HMDRotation.y,
-			      HMDRotation.z,
-			      HMDRotation.w);
-
-				updateCameraRotation();
-		});
+		getPanoramaDataForVertex(m_aVertices[m_iCurrentFrame],callBackRotation);
 	}
 
 
@@ -174,6 +198,10 @@ var riftour = riftour || function(){
                 //$("revealPrezLink").attr("href","http://"+window.location.hostname+":8080/index.html");
                 //$("revealPrezLink").click();
             }else if (json.type === "road"){
+            	ReferenceHMDRotation.copy(HMDRotation);
+            	var vectorAngle = new THREE.Vector3();
+            	vectorAngle.setEulerFromQuaternion(ReferenceHMDRotation, 'YZX');
+  				ReferenceAngle = angleRangeDeg(THREE.Math.radToDeg(-vectorAngle.y));
             	(new google.maps.DirectionsService()).route({
 				 origin:json.origin,
 				 destination:json.dest,
@@ -188,7 +216,7 @@ var riftour = riftour || function(){
 						m_iTotalFrames = m_aVertices.length;
 						m_iCurrentFrame = 0;
 						m_iVerticesBack = 0;
-						getPanoramaDataForVertex(m_aVertices[m_iCurrentFrame]);								
+						getPanoramaDataForVertex(m_aVertices[m_iCurrentFrame],callBackRotation);								
 					} else {
 						alert("Error pulling directions for movie, please try again.");
 					}
