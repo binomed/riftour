@@ -3,7 +3,7 @@ var riftour = riftour || function(){
 	// Les points du parcours
 	var m_aVertices = null;
 	var m_Pano = [];
-	var m_iSensitivity = 15;
+	var m_iSensitivity = 50;
 	var m_iVerticesBack = 0;
 
 	var m_sPanoClient = new google.maps.StreetViewService();
@@ -12,6 +12,7 @@ var riftour = riftour || function(){
 
 	var ReferenceHMDRotation = new THREE.Quaternion();
 	var ReferenceAngle = 0;
+	var oldLocation = null;
 
 	
 	function pageLoad(){
@@ -137,9 +138,10 @@ var riftour = riftour || function(){
 	function getPanoramaDataForVertex(vertex, callback) {
 		m_sPanoClient.getPanoramaByLocation(vertex, m_iSensitivity, function(panoData,status) {
 			if(status==="OK" && panoLoader) {
-				longLatHeading = panoData.tiles.centerHeading;
+				//longLatHeading = panoData.tiles.centerHeading;
 				console.log("Pano : centerHeading : "+panoData.tiles.centerHeading+" | originHeading : "+panoData.tiles.originHeading+" | y : "+projSphere.quaternion.setFromEuler(new THREE.Vector3(0,THREE.Math.degToRad(90-panoData.tiles.centerHeading),0),'YZX').y);
-				panoLoader.load(panoData.location.pano, true,callback);
+				panoLoader.load(panoData.location, oldLocation, true,callback);
+				oldLocation = panoData.location;
 				m_iCurrentFrame++;
 				
 			} 
@@ -147,6 +149,7 @@ var riftour = riftour || function(){
 	}
 
 	function callBackRotation(){
+		var longLatHeading = panoLoader.heading;
 		var yLongLat = projSphere.quaternion.setFromEuler(new THREE.Vector3(0,THREE.Math.degToRad(90-longLatHeading),0),'YZX').y;
 		var yHMD = projSphere.quaternion.setFromEuler(new THREE.Vector3(0,THREE.Math.degToRad(90-currHeading),0),'YZX').y;		
 
@@ -155,10 +158,14 @@ var riftour = riftour || function(){
 		var quartRot = new THREE.Quaternion(0,Math.sin(THREE.Math.degToRad(angleDelta)/2),0,Math.cos(THREE.Math.degToRad(angleDelta)/2));
 		BaseRotation.multiplyQuaternions(quartRot, HMDRotation);	
 
+		var baseVector = new THREE.Vector3();
+		baseVector.setEulerFromQuaternion(BaseRotation, 'YZX');
+  		var baseHeading = angleRangeDeg(THREE.Math.radToDeg(-baseVector.y));
+
 		//BaseRotation.multiply(new THREE.Quaternion(0,Math.sin(THREE.Math.degToRad(180)/2),0,Math.cos(THREE.Math.degToRad(180)/2)));	
 
 		//console.log("CallBack : Base.y : "+BaseRotation.y+" | HMD.y : "+HMDRotation.y+" | yLongLat : "+yLongLat+" | yHMD : "+yHMD+" | longLatHeading : "+longLatHeading+" : currHeading : "+currHeading);
-		console.log("CallBack : longLatHeading : "+longLatHeading+" : currHeading : "+currHeading+" | angleDelta : "+angleDelta+" | ReferenceAngle : "+ReferenceAngle);
+		console.log("CallBack : longLatHeading : "+longLatHeading+" : currHeading : "+currHeading+" | angleDelta : "+angleDelta+" | ReferenceAngle : "+ReferenceAngle+" | BaseRotation : "+baseHeading);
 
 		//BaseRotation.copy(ReferenceHMDRotation);
 		updateCameraRotation();

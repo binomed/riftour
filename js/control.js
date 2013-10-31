@@ -38,13 +38,14 @@ var riftourControl = riftourControl || function(){
         $("#choiceSelect").change(function(){
             var valSelect = $("#choiceSelect option:selected").val();
             if (valSelect === "croisette"){
-                //voyage.origin = 
+                voyage.origin = "124 boulevard de la croisette, Cannes";
+                voyage.dest = "1 Boulevard de la croisette, Cannes";
             }else if (valSelect === "champs"){
-                voyage.origin = "Place de la concorde, Paris";
-                voyage.dest = "Place de l'étoile, Paris";
+                voyage.origin = "10 Avenue des champs Elysées, Paris";
+                voyage.dest = "Place Charles de Gaulle, Paris";
             }else if (valSelect === "anglais"){
-                voyage.origin = "Epitech, Nantes";
-                voyage.dest = "Les machines, Nantes";
+                voyage.origin = "267 Promenade des anglais, Nice";
+                voyage.dest = "1 Promenade des anglais, Nice";
             }
         });
 

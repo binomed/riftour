@@ -94,11 +94,14 @@ GSVPANO.PanoLoader = function (parameters) {
 			if( self.onPanoramaData ) self.onPanoramaData( result );
 			var h = google.maps.geometry.spherical.computeHeading(location, result.location.latLng);
 
-			rotation = (result.tiles.centerHeading - h) * Math.PI / 180.0;			
+			rotation = (result.tiles.centerHeading - h);// * Math.PI / 180.0;			
+			var useCenterHeading = Math.abs(rotation) > 170;			
 			copyright = result.copyright;
 			self.copyright = result.copyright;
 			self.links = result.links;
-			self.heading = result.tiles.centerHeading;
+			self.heading = !useCenterHeading && h != 0 ? h : result.tiles.centerHeading;// - rotation;
+			//self.heading = h != 0 ? h : result.tiles.centerHeading;// - rotation;
+			//self.heading = result.tiles.centerHeading - rotation;
 			_panoId = result.location.pano;
 			self.location = result.location;
 			self.composePanorama(cache);
@@ -108,12 +111,12 @@ GSVPANO.PanoLoader = function (parameters) {
 		}
 	},
 
-	this.load = function (location, cache, callback) {
+	this.load = function (location, oldLocation, cache, callback) {
 		var self = this;
 		cache = cache || true;
-		if ((typeof location) === 'string') {
-			_panoClient.getPanoramaById(location, function(result, status){
-				self.loadCB(result, status, location, cache)
+		if ((typeof location.pano) === 'string') {
+			_panoClient.getPanoramaById(location.pano, function(result, status){
+				self.loadCB(result, status, oldLocation ? oldLocation.latLng : location.latLng, cache)
 				//console.log("PannoLoad from id");
 				if (callback){
 					callback();
@@ -121,8 +124,8 @@ GSVPANO.PanoLoader = function (parameters) {
 			})
 		}
 		else {
-			_panoClient.getPanoramaByLocation(location, 50,  function(result, status){
-				self.loadCB(result, status, location, cache);
+			_panoClient.getPanoramaByLocation(location.latLng, 50,  function(result, status){
+				self.loadCB(result, status, oldLocation ? oldLocation.latLng : location.latLng, cache);
 				//console.log("PannoLoad from location");
 				if (callback){
 					callback();
