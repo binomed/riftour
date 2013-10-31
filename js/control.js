@@ -46,6 +46,9 @@ var riftourControl = riftourControl || function(){
             }else if (valSelect === "anglais"){
                 voyage.origin = "267 Promenade des anglais, Nice";
                 voyage.dest = "1 Promenade des anglais, Nice";
+            }else if (valSelect === "broadway"){
+                voyage.origin = "1452 Broadway, New York";
+                voyage.dest = "1740 Broadway, New York";
             }
         });
 
