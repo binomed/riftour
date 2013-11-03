@@ -49,6 +49,15 @@ var riftourControl = riftourControl || function(){
             }else if (valSelect === "broadway"){
                 voyage.origin = "1452 Broadway, New York";
                 voyage.dest = "1740 Broadway, New York";
+            }else if (valSelect === "verdon"){
+                voyage.origin = "Route de Castellane, 04360 Moustiers-Saint-Marie";
+                voyage.dest = "Roue de Moustiers, 04120 La Palud-sur-Verdon";
+            }else if (valSelect === "mercantour"){
+                voyage.origin = "Parc national du Mercantour, 04850 Jausiers";
+                voyage.dest = "Jausiers";
+            }else if (valSelect === "vence"){
+                voyage.origin = "col de Vence";
+                voyage.dest = "Vence";
             }
         });
 
