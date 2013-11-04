@@ -18,6 +18,7 @@ var riftour = riftour || function(){
 	function pageLoad(){
 
 		$("#end").hide();
+		$("#end2").hide();
 
 /*
 
@@ -162,28 +163,18 @@ var riftour = riftour || function(){
 		baseVector.setEulerFromQuaternion(BaseRotation, 'YZX');
   		var baseHeading = angleRangeDeg(THREE.Math.radToDeg(-baseVector.y));
 
-		//BaseRotation.multiply(new THREE.Quaternion(0,Math.sin(THREE.Math.degToRad(180)/2),0,Math.cos(THREE.Math.degToRad(180)/2)));	
-
-		//console.log("CallBack : Base.y : "+BaseRotation.y+" | HMD.y : "+HMDRotation.y+" | yLongLat : "+yLongLat+" | yHMD : "+yHMD+" | longLatHeading : "+longLatHeading+" : currHeading : "+currHeading);
 		console.log("CallBack : longLatHeading : "+longLatHeading+" : currHeading : "+currHeading+" | angleDelta : "+angleDelta+" | ReferenceAngle : "+ReferenceAngle+" | BaseRotation : "+baseHeading);
 
-		//BaseRotation.copy(ReferenceHMDRotation);
 		updateCameraRotation();
-/*
-		BaseRotation.set(
-	      HMDRotation.x,
-	      HMDRotation.y, //yLongLat, //HMDRotation.y,
-	      HMDRotation.z,
-	      HMDRotation.w);
-
-		updateCameraRotation();*/
 	}
 
 
 	function nextStep(){
 		getPanoramaDataForVertex(m_aVertices[m_iCurrentFrame],callBackRotation);
-		if (m_iCurrentFrame >= m_iTotalFrames){
+		console.log("NextStep : "+m_iCurrentFrame+" / "+m_iTotalFrames);
+		if (m_iCurrentFrame == (m_iTotalFrames - 1)){
 			$("#end").show();
+			$("#end2").show();
 		}
 	}
 
@@ -209,14 +200,16 @@ var riftour = riftour || function(){
                 //$("revealPrezLink").click();
             }else if (json.type === "road"){
             	$("#end").hide();
+            	$("#end2").hide();
             	ReferenceHMDRotation.copy(HMDRotation);
             	var vectorAngle = new THREE.Vector3();
             	vectorAngle.setEulerFromQuaternion(ReferenceHMDRotation, 'YZX');
   				ReferenceAngle = angleRangeDeg(THREE.Math.radToDeg(-vectorAngle.y));
+  				console.log("Angle de reférence : "+ReferenceAngle);
             	(new google.maps.DirectionsService()).route({
 				 origin:json.origin,
 				 destination:json.dest,
-				 travelMode:google.maps.TravelMode.DRIVING
+				 travelMode:json.directionType,
 					}, 
 				function(result, status) {
 					if(status == google.maps.DirectionsStatus.OK) {

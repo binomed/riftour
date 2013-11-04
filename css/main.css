@@ -40,9 +40,23 @@ section{
   margin: auto;
 }
 
-#end{
+#end, #end2{
+  position: absolute;
+  top: 50%;
+  margin-top: -100px;
   background-color: black;
   width: 200px;
   height: 200px;
   color: white;
+  font-size: 20px;
+  line-height: 200px;
+  text-align: center;
+}
+
+#end{
+  left:25%;
+}
+
+#end2{
+  right: 25%;
 }

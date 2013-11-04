@@ -25,7 +25,8 @@ var riftourControl = riftourControl || function(){
             socket.send(JSON.stringify({
                 "type" : "road",
                 "origin" : voyage.origin,
-                "dest" : voyage.dest
+                "dest" : voyage.dest,
+                "directionType" : voyage.directionType
             }));
         });
 
@@ -40,31 +41,39 @@ var riftourControl = riftourControl || function(){
             if (valSelect === "croisette"){
                 voyage.origin = "124 boulevard de la croisette, Cannes";
                 voyage.dest = "1 Boulevard de la croisette, Cannes";
+                voyage.directionType = google.maps.TravelMode.DRIVING;
             }else if (valSelect === "champs"){
                 voyage.origin = "10 Avenue des champs Elysées, Paris";
                 voyage.dest = "Place Charles de Gaulle, Paris";
+                voyage.directionType = google.maps.TravelMode.DRIVING;
             }else if (valSelect === "anglais"){
                 voyage.origin = "267 Promenade des anglais, Nice";
                 voyage.dest = "1 Promenade des anglais, Nice";
+                voyage.directionType = google.maps.TravelMode.DRIVING;
             }else if (valSelect === "broadway"){
                 voyage.origin = "1452 Broadway, New York";
                 voyage.dest = "1740 Broadway, New York";
+                voyage.directionType = google.maps.TravelMode.WALKING;
             }else if (valSelect === "verdon"){
                 voyage.origin = "Route de Castellane, 04360 Moustiers-Saint-Marie";
                 voyage.dest = "Roue de Moustiers, 04120 La Palud-sur-Verdon";
+                voyage.directionType = google.maps.TravelMode.DRIVING;
             }else if (valSelect === "mercantour"){
                 voyage.origin = "Parc national du Mercantour, 04850 Jausiers";
                 voyage.dest = "Jausiers";
+                voyage.directionType = google.maps.TravelMode.DRIVING;
             }else if (valSelect === "vence"){
                 voyage.origin = "col de Vence";
                 voyage.dest = "Vence";
+                voyage.directionType = google.maps.TravelMode.DRIVING;
             }else if (valSelect === "tokyo"){
                 voyage.origin = "Chuo Dori, Tokyo, Japon";
                 voyage.dest = "Vence";
+                voyage.directionType = google.maps.TravelMode.DRIVING;
             }else if (valSelect === "disney"){
-                voyage.origin =  "Boulevard du Grand Fossé, 77700 Chessy, France";
-                voyage.dest = "Place des Passagers du Vent, 77700 Chessy, France";
-                voyage.type = "foot";
+                voyage.origin =  "Peter Pan's Flight, 77700 Chessy, France";
+                voyage.dest = "It's a Small World, 77700 Chessy, France ";
+                voyage.directionType = google.maps.TravelMode.WALKING;
             }
             
         });
