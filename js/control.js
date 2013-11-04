@@ -58,7 +58,15 @@ var riftourControl = riftourControl || function(){
             }else if (valSelect === "vence"){
                 voyage.origin = "col de Vence";
                 voyage.dest = "Vence";
+            }else if (valSelect === "tokyo"){
+                voyage.origin = "Chuo Dori, Tokyo, Japon";
+                voyage.dest = "Vence";
+            }else if (valSelect === "disney"){
+                voyage.origin =  "Boulevard du Grand Fossé, 77700 Chessy, France";
+                voyage.dest = "Place des Passagers du Vent, 77700 Chessy, France";
+                voyage.type = "foot";
             }
+            
         });
 
          

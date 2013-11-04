@@ -17,7 +17,7 @@ var riftour = riftour || function(){
 	
 	function pageLoad(){
 
-
+		$("#end").hide();
 
 /*
 
@@ -182,6 +182,9 @@ var riftour = riftour || function(){
 
 	function nextStep(){
 		getPanoramaDataForVertex(m_aVertices[m_iCurrentFrame],callBackRotation);
+		if (m_iCurrentFrame >= m_iTotalFrames){
+			$("#end").show();
+		}
 	}
 
 
@@ -205,6 +208,7 @@ var riftour = riftour || function(){
                 //$("revealPrezLink").attr("href","http://"+window.location.hostname+":8080/index.html");
                 //$("revealPrezLink").click();
             }else if (json.type === "road"){
+            	$("#end").hide();
             	ReferenceHMDRotation.copy(HMDRotation);
             	var vectorAngle = new THREE.Vector3();
             	vectorAngle.setEulerFromQuaternion(ReferenceHMDRotation, 'YZX');

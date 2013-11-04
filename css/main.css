@@ -39,3 +39,10 @@ section{
 #search, #go{
   margin: auto;
 }
+
+#end{
+  background-color: black;
+  width: 200px;
+  height: 200px;
+  color: white;
+}
