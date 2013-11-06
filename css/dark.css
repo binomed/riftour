@@ -1,0 +1,17 @@
+body.dark {
+	background: url(../assets/darkvador_dark.jpg) no-repeat fixed bottom right;
+  -o-background-size: cover;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  -ms-background-size: cover;
+  -khtml-background-size: cover;
+  background-size: cover;
+}
+
+.dark #main_title,.dark #main_panel { left:26%; }
+
+.dark #main_title { margin-top:80px; }
+
+.dark #main_panel { background-color:rgba(255, 255, 255, 0.2); }
+
+.dark section { margin-top:70px; }

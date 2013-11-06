@@ -13,12 +13,13 @@ var riftour = riftour || function(){
 	var ReferenceHMDRotation = new THREE.Quaternion();
 	var ReferenceAngle = 0;
 	var oldLocation = null;
+	
 
 	
 	function pageLoad(){
 
 		$("#end").hide();
-		$("#end2").hide();
+		$("#end2").hide();		
 
 /*
 
@@ -169,7 +170,7 @@ var riftour = riftour || function(){
 	}
 
 
-	function nextStep(){
+	function nextStep(){		
 		getPanoramaDataForVertex(m_aVertices[m_iCurrentFrame],callBackRotation);
 		console.log("NextStep : "+m_iCurrentFrame+" / "+m_iTotalFrames);
 		if (m_iCurrentFrame == (m_iTotalFrames - 1)){

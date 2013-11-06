@@ -4,11 +4,14 @@ var riftourControl = riftourControl || function(){
     var socket = null;
     var voyage = {
         origin : "Epitech, Nantes",
-        dest : "Les machines, Nantes"
+        dest : "Les machines, Nantes",
+        directionType : google.maps.TravelMode.DRIVING
     }
+    var light = new Date().getTime() % 2 === 0;
 
     function pageLoad(){
 
+        $("body").removeClass("light dark").addClass(light ? "light" : "dark");
 
         $("#mapChoice").hide();
 
@@ -22,6 +25,8 @@ var riftourControl = riftourControl || function(){
         });
 
         $("#go").on("click", function(){
+            light = !light;
+            $("body").removeClass("light dark").addClass(light ? "light" : "dark");
             socket.send(JSON.stringify({
                 "type" : "road",
                 "origin" : voyage.origin,

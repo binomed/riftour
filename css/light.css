@@ -1,0 +1,17 @@
+body.light{
+	background: url(../assets/darkvador_light.jpg) no-repeat fixed bottom right;
+  -o-background-size: cover;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  -ms-background-size: cover;
+  -khtml-background-size: cover;
+  background-size: cover;
+}
+
+.light #main_title,.light #main_panel { left:15%; }
+
+.light #main_title { margin-top:80px; }
+
+.light #main_panel { background-color:rgba(0, 0, 0, 0.4); }
+
+.light section { margin-top:70px; }
