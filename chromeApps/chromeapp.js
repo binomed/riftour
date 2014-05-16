@@ -52,7 +52,10 @@ var riftourChrome = riftourChrome || function(){
     var compt = 0;
 
     function initArduino(){
-		chrome.serial.connect("COM7", onOpenArduino);
+    	console.log('try to init arduino');
+    	chrome.serial.getDevices(function(ports) {
+			chrome.serial.connect("COM3", onOpenArduino);
+		});
     	/*chrome.serial.getPorts(function(ports) {
 		});*/
     }
@@ -82,20 +85,18 @@ var riftourChrome = riftourChrome || function(){
 	}
 
 	function onReadArduino(readInfo) {
-		 if (info.connectionId == connectionId && info.data) {
-	      	var str = convertArrayBufferToString(info.data);
+		 if (readInfo.connectionId == connectionId && readInfo.data) {
+	      	var str = convertArrayBufferToString(readInfo.data);
 	      	var value = "";
 	      	if (str.charAt(str.length-1) === '\n') {
 		        value += str.substring(0, str.length-1);
-		        traitementDonnees(value);
-		        value = '';
 		    } else {
 		        value += str;
 		    }
 			//var uint8View = new Uint8Array(readInfo.data);
 			//var value = String.fromCharCode(uint8View[0]);
 
-			if (value == "1") // Light on and off
+			if (+value == 1) // Light on and off
 			{
 				var curentTime = new Date().getTime();
 				if (curentTime - lastArduinoTime > delay){

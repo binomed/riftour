@@ -94,14 +94,11 @@ GSVPANO.PanoLoader = function (parameters) {
 			if( self.onPanoramaData ) self.onPanoramaData( result );
 			var h = google.maps.geometry.spherical.computeHeading(location, result.location.latLng);
 
-			rotation = (result.tiles.centerHeading - h);// * Math.PI / 180.0;			
-			var useCenterHeading = Math.abs(rotation) > 170;			
+			rotation = (result.tiles.centerHeading - h) * Math.PI / 180.0;
 			copyright = result.copyright;
 			self.copyright = result.copyright;
 			self.links = result.links;
-			self.heading = !useCenterHeading && h != 0 ? h : result.tiles.centerHeading;// - rotation;
-			//self.heading = h != 0 ? h : result.tiles.centerHeading;// - rotation;
-			//self.heading = result.tiles.centerHeading - rotation;
+			self.heading = result.tiles.centerHeading;
 			_panoId = result.location.pano;
 			self.location = result.location;
 			self.composePanorama(cache);
@@ -111,57 +108,14 @@ GSVPANO.PanoLoader = function (parameters) {
 		}
 	},
 
-	this.load = function (location, oldLocation, cache, callback) {
+	this.load = function (location, cache) {
 		var self = this;
 		cache = cache || true;
-		if ((typeof location.pano) === 'string') {
-			//_panoClient.getPanoramaById(location.pano, function(result, status){
-			_panoClient.getPanoramaById(location, function(result, status){
-				self.loadCB(result, status, oldLocation ? oldLocation : location, cache)
-				//self.loadCB(result, status, oldLocation ? oldLocation.latLng : location.latLng, cache)
-				//console.log("PannoLoad from id");
-				if (callback){
-					callback();
-				}
-			})
+		if ((typeof location) === 'string') {
+			_panoClient.getPanoramaById(location, function(result, status){self.loadCB(result, status, location, cache)})
 		}
 		else {
-			//_panoClient.getPanoramaByLocation(location.latLng, 50,  function(result, status){
-			_panoClient.getPanoramaByLocation(location, 50,  function(result, status){
-				self.loadCB(result, status, oldLocation ? oldLocation : location, cache);
-				//self.loadCB(result, status, oldLocation ? oldLocation.latLng : location.latLng, cache);
-				//console.log("PannoLoad from location");
-				if (callback){
-					callback();
-				}
-			})
-		}
-	};
-
-	this.loadOldWay = function (location, oldLocation, cache, callback) {
-		var self = this;
-		cache = cache || true;
-		if ((typeof location.pano) === 'string') {
-			_panoClient.getPanoramaById(location.pano, function(result, status){
-			//_panoClient.getPanoramaById(location, function(result, status){
-				//self.loadCB(result, status, oldLocation ? oldLocation : location, cache)
-				self.loadCB(result, status, oldLocation ? oldLocation.latLng : location.latLng, cache)
-				//console.log("PannoLoad from id");
-				if (callback){
-					callback();
-				}
-			})
-		}
-		else {
-			_panoClient.getPanoramaByLocation(location.latLng, 50,  function(result, status){
-			//_panoClient.getPanoramaByLocation(location, 50,  function(result, status){
-				//self.loadCB(result, status, oldLocation ? oldLocation : location, cache);
-				self.loadCB(result, status, oldLocation ? oldLocation.latLng : location.latLng, cache);
-				//console.log("PannoLoad from location");
-				if (callback){
-					callback();
-				}
-			})
+			_panoClient.getPanoramaByLocation(location, 50,  function(result, status){self.loadCB(result, status, location, cache);})
 		}
 	};
 

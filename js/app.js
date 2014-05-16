@@ -142,7 +142,8 @@ var riftour = riftour || function(){
 			if(status==="OK" && panoLoader) {
 				//longLatHeading = panoData.tiles.centerHeading;
 				console.log("Pano : centerHeading : "+panoData.tiles.centerHeading+" | originHeading : "+panoData.tiles.originHeading+" | y : "+projSphere.quaternion.setFromEuler(new THREE.Vector3(0,THREE.Math.degToRad(90-panoData.tiles.centerHeading),0),'YZX').y);
-				panoLoader.load(panoData.location, oldLocation, true,callback);
+				//panoLoader.load(panoData.location, oldLocation, true,callback);
+				panoLoader.loadOldWay(panoData.location, oldLocation, true,callback);
 				oldLocation = panoData.location;
 				m_iCurrentFrame++;
 				
